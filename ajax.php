@@ -7,6 +7,14 @@ if (!file_exists("documents")) {
     mkdir("documents");
 }
 
+if (isset($_GET['a'])) {
+    $_GET['id'] = preg_match("/getThemes|save|load/", $_GET['id']) ? $_GET['id'] : "";
+}
+
+if (isset($_GET['id'])) {
+    $_GET['id'] = preg_replace("/[^a-z]/", "", $_GET['id']);
+}
+
 switch ($_GET['a']) {
     case "getThemes":
 
