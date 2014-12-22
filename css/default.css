@@ -1,0 +1,10 @@
+body {
+    margin-top:32px ! important;
+    margin-bottom:64px ! important;
+}
+
+#editor {
+    margin:32px;
+    width:100%;
+    height:640px;
+}
