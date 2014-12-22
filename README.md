@@ -10,4 +10,5 @@ Features
 * Search and replace
 * Theme switching
 * Time formating using momentjs
+* Styled with Bootstrap
 * And of course Ace editor (XML mode). You can easily switch this in `js/default.js` but there is no UI for it at the moment.
