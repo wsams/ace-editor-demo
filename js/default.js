@@ -3,7 +3,7 @@ var editor;
 function saveDocument() {
     $.getJSON("ajax.php?a=save&id=demo&xml=" + encodeURIComponent(editor.getValue()), function(json) {
         if (json.status === "ok") {
-            $("#last-saved").html("Last saved on " + moment().format("dddd, MMMM Do YYYY, h:mm:ss a"));
+            $(".last-saved").html("Last saved on " + moment().format("dddd, MMMM Do YYYY, h:mm:ss a"));
         } else {
             alert(json.msg);
         }
