@@ -37,7 +37,7 @@ function replaceAll() {
 
 $(document).ready(function() {
     editor = ace.edit("editor");
-    editor.setTheme("ace/theme/tomorrow");
+    editor.setTheme("ace/theme/clouds");
     editor.getSession().setMode("ace/mode/xml");
 
     $.getJSON("ajax.php?a=load&id=demo", function(json) {
