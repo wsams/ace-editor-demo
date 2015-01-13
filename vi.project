@@ -1,0 +1,3 @@
+#\!/bin/bash
+
+vi index.html ajax.php js/default.js css/default.css README.md demo.xml

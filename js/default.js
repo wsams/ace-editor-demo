@@ -37,15 +37,17 @@ function replaceAll() {
 
 function loadEditor() {
     var langTools = ace.require("ace/ext/language_tools");
+    var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
     editor = ace.edit("editor");
     editor.setOptions({
         enableBasicAutocompletion: true,
         enableLiveAutocompletion: true,
-        enableSnippets: true
+        enableSnippets: true,
     });
     editor.setTheme("ace/theme/clouds");
     editor.getSession().setMode("ace/mode/xml");
     editor.getSession().setUseWrapMode(true);
+    var statusBar = new StatusBar(editor, document.getElementById("statusBar"));
 
     var kbCompleter = {
         getCompletions: function(editor, session, pos, prefix, callback) {
