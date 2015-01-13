@@ -29,6 +29,11 @@ switch ($_GET['a']) {
         print(json_encode($themes));
         break;
 
+    case "getLanguages":
+
+        print(json_encode(array("xml", "html")));
+        break;
+
     case "save":
 
         if (file_put_contents("documents/{$sessid}.{$_GET['id']}.xml", $_GET['xml'])) {
@@ -50,6 +55,13 @@ switch ($_GET['a']) {
         } else {
             print(json_encode(array("status"=>"error", "msg"=>"Could not load document")));
         }
+        break;
+
+    case "completions":
+        $content = urldecode($_GET['content']);
+        $out = array(array("value" => "cat", "caption" => "cat", "meta" => "mytag", "score" => 1000), 
+            array("value" => "dog", "caption" => "dog", "meta" => "mytag", "score" => 900));
+        print(json_encode($out));
         break;
 
     default:

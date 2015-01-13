@@ -2,23 +2,9 @@
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns:kb="xkbml-1.0.dtd">
+<html>
     <head>
         <title>Demo Document</title>
-        <meta>
-            <kb:docid>demo</kb:docid>
-            <kb:docaudience>default</kb:docaudience>
-            <kb:status value="approved"/>
-            <kb:owner>joe</kb:owner>
-            <kb:author>joe</kb:author>
-            <kb:birthdate date="2009-07-31"/>
-            <kb:lastmodified date="2014-10-17"/>
-            <kb:approved date="2014-07-16"/>
-            <kb:importance value="standard"/>
-            <kb:visibility value="visible"/>
-            <kb:volatility value="stable"/>
-            <kb:reference docid="test"/>
-        </meta>
     </head>
     <body>
         <p>This is a paragraph.</p>

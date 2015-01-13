@@ -35,10 +35,38 @@ function replaceAll() {
     saveDocument();
 }
 
-$(document).ready(function() {
+function loadEditor() {
+    var langTools = ace.require("ace/ext/language_tools");
     editor = ace.edit("editor");
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        enableSnippets: true
+    });
     editor.setTheme("ace/theme/clouds");
     editor.getSession().setMode("ace/mode/xml");
+    editor.getSession().setUseWrapMode(true);
+
+    var kbCompleter = {
+        getCompletions: function(editor, session, pos, prefix, callback) {
+            if (prefix.length === 0) {
+                callback(null, []);
+                return;
+            }                    
+            $.getJSON("ajax.php?a=completions&prefix=" + prefix + "&content=" + session, function(json) {
+                callback(null, json.map(function(c) {
+                    console.log("value: " + c.value);
+                    return {value: c.value, caption: c.caption, meta: c.meta, score:c.score};
+                }));
+            })
+        }
+    };
+    langTools.addCompleter(kbCompleter);
+}
+
+$(document).ready(function() {
+
+    loadEditor();
 
     $.getJSON("ajax.php?a=load&id=demo", function(json) {
         if (json.status === "ok") {
@@ -59,6 +87,15 @@ $(document).ready(function() {
         });
     });
 
+    $.getJSON("ajax.php?a=getLanguages", function(json) {
+        $.each(json, function(i, language) {
+            $("#languages").append("<option value=\"" + language + "\">" + language + "</option>");
+        });
+        $("#languages").on("change", function() {
+            editor.getSession().setMode("ace/mode/" + $(this).val());
+        });
+    });
+
     prevtime = parseInt(new Date().getTime());
     threshold = 200;
     curval = "";
@@ -73,6 +110,10 @@ $(document).ready(function() {
             t = setTimeout("saveDocument()", threshold);
             return;
         }
+    });
+
+    $(".save-button").on("click", function() {
+        saveDocument();
     });
 
     $("#find-value").on("keyup", function() {
