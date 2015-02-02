@@ -49,7 +49,7 @@ function loadEditor() {
     editor.getSession().setUseWrapMode(true);
     var statusBar = new StatusBar(editor, document.getElementById("statusBar"));
 
-    var kbCompleter = {
+    var completer = {
         getCompletions: function(editor, session, pos, prefix, callback) {
             if (prefix.length === 0) {
                 callback(null, []);
@@ -63,7 +63,7 @@ function loadEditor() {
             })
         }
     };
-    langTools.addCompleter(kbCompleter);
+    langTools.addCompleter(completer);
 }
 
 $(document).ready(function() {
