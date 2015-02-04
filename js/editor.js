@@ -80,7 +80,6 @@ function loadEditor() {
     editor.getSession().setMode("ace/mode/xml");
     editor.getSession().setUseWrapMode(true);
     var statusBar = new StatusBar(editor, document.getElementById("statusBar"));
-
 }
 
 $(document).ready(function() {
