@@ -59,8 +59,76 @@ switch ($_GET['a']) {
 
     case "completions":
         $content = urldecode($_GET['content']);
-        $out = array(array("value" => "cat", "caption" => "cat", "meta" => "mytag", "score" => 1000), 
-            array("value" => "dog", "caption" => "dog", "meta" => "mytag", "score" => 900));
+        switch($_GET['completeType']) {
+            case "value";
+                switch($_GET['tagName']) {
+                    case "p":
+                        $out = array(
+                            array("value" => "This is an autocompleted sentence.", 
+                                "caption" => "This is an autocompleted sentence.", 
+                                "meta" => "mytag", "score" => 1000), 
+                            array("value" => "Why do you want to autocomplete this silly sentence.", 
+                                "caption" => "Why do you want to autocomplete this silly sentence.", 
+                                "meta" => "mytag", "score" => 900));
+                        break;
+                    case "h1":
+                        $out = array(
+                            array("value" => "The Best Title", 
+                                "caption" => "The Best Title", 
+                                "meta" => "mytag", "score" => 1000), 
+                            array("value" => "Titles Are Cool", 
+                                "caption" => "Titles Are Cool", 
+                                "meta" => "mytag", "score" => 1000), 
+                            array("value" => "One More Title", 
+                                "caption" => "One More Title", 
+                                "meta" => "mytag", "score" => 900));
+                        break;
+                    default:
+                        $out = array(array());
+                        break;
+                }
+                break;
+            case "attribute";
+                switch($_GET['attributeName']) {
+                    case "class":
+                        // Here we just autocomplete for any tag but you can use
+                        // $_GET['tagName'] to restrict these button classes to
+                        // particular button tags.
+                        $out = array(
+                            array("value" => "btn", 
+                                "caption" => "btn", 
+                                "meta" => "mytag", "score" => 1000), 
+                            array("value" => "btn-success", 
+                                "caption" => "btn-success", 
+                                "meta" => "mytag", "score" => 1000), 
+                            array("value" => "btn-danger", 
+                                "caption" => "btn-danger", 
+                                "meta" => "mytag", "score" => 1000), 
+                            array("value" => "btn-info", 
+                                "caption" => "btn-info", 
+                                "meta" => "mytag", "score" => 1000), 
+                            array("value" => "btn-primary", 
+                                "caption" => "btn-primary", 
+                                "meta" => "mytag", "score" => 900));
+                        break;
+                    case "id":
+                        $out = array(
+                            array("value" => "myid1", 
+                                "caption" => "myid1", 
+                                "meta" => "mytag", "score" => 1000), 
+                            array("value" => "anotherid", 
+                                "caption" => "anotherid", 
+                                "meta" => "mytag", "score" => 900));
+                        break;
+                    default:
+                        $out = array(array());
+                        break;
+                }
+                break;
+            default:
+                $out = array(array());
+                break;
+        }
         print(json_encode($out));
         break;
 

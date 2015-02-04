@@ -12,7 +12,7 @@ Features
 * Time formating using momentjs
 * Styled with Bootstrap
 * Ace editor (XML and HTML modes)
-* Custom autocompletion
+* Autocomplete accepted values for any XML tag or attribute.
 
 How it works
 ============
@@ -22,3 +22,10 @@ This demo functions in a way that might not be obvious. The document you are see
 By default your document is saved every 60 seconds. Also the document is saved when you have quit editing the document for 200 milliseconds.
 
 The search and replace also behaves oddly. Until you click the `Find` button, the `Replace` and `Replace all` buttons are disabled. And any changes to the find input field re-disables the `Replace` and `Replace all` buttons. This is because `editor.find(needle)` must be fired before a replace can occur. The replacement is based on the `needle`. This probably wouldn't be ideal in production; easily implemented other ways.
+
+Autocompletion
+==============
+
+See `completer` in `js/editor.js` and `js/xmltaginterpreter.js`. The XmlTagInterpreter class will take the cursor position and the Ace session and determine which tag your cursor is inside, or the attribute you're wanting to autocomplete. It will return a JavaScript Object containing the `completeType`, `tagName`, and `attributeName` if applicable, otherwise null. If `completeType` is `value` you know you're going to complete a tag value. If it is `attribute` then you're trying to complete an attribute for some tag.
+
+`ajax.php` returns some autocomplete data for just a few tags. You can autocomplete `<p></p>` and `<h1></h1>`. The available attributes to complete are `id=""` and `class=""`. For the autocopmlete to fire the tag or attribute must be empty and your cursor must be inside the tag or quotations. Hit `control + spacebar` to activate the drop-down.

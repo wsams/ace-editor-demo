@@ -36,11 +36,43 @@ function replaceAll() {
 }
 
 function loadEditor() {
-    var langTools = ace.require("ace/ext/language_tools");
     var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
+
+    var completer = {
+        getCompletions: function(editor, session, pos, prefix, callback) {
+            if (prefix.length === 0) {
+                var line = session.getLine(pos.row);
+                if (undefined !== line) {
+                    var interpreter = new XmlTagInterpreter(pos.row, pos.column, session);
+                    var completeInfo = interpreter.getCompleteInfo();
+                    if (undefined === completeInfo || completeInfo === null 
+                            || undefined === completeInfo.completeType || completeInfo.completeType === null
+                            || completeInfo.completeType.length === 0
+                            || undefined === completeInfo.tagName || completeInfo.tagName === null
+                            || completeInfo.tagName.length === 0) {
+                        callback(null, []);
+                        return;
+                    }
+
+                    $.getJSON("ajax.php?a=completions&completeType=" + encodeURIComponent(completeInfo.completeType) 
+                            + "&tagName=" + encodeURIComponent(completeInfo.tagName) 
+                            + "&attributeName=" + encodeURIComponent(completeInfo.attributeName), function(json) {
+                        callback(null, json.map(function(c) {
+                            return {value: c.value, caption: c.caption, 
+                                meta: c.meta, score:c.score};
+                        }));
+                    })
+                }
+            } else {
+                callback(null, []);
+                return;
+            }
+        }
+    };
+
     editor = ace.edit("editor");
     editor.setOptions({
-        enableBasicAutocompletion: true,
+        enableBasicAutocompletion: [completer],
         enableLiveAutocompletion: true,
         enableSnippets: true,
     });
@@ -49,24 +81,10 @@ function loadEditor() {
     editor.getSession().setUseWrapMode(true);
     var statusBar = new StatusBar(editor, document.getElementById("statusBar"));
 
-    var kbCompleter = {
-        getCompletions: function(editor, session, pos, prefix, callback) {
-            if (prefix.length === 0) {
-                callback(null, []);
-                return;
-            }                    
-            $.getJSON("ajax.php?a=completions&prefix=" + prefix + "&content=" + session, function(json) {
-                callback(null, json.map(function(c) {
-                    console.log("value: " + c.value);
-                    return {value: c.value, caption: c.caption, meta: c.meta, score:c.score};
-                }));
-            })
-        }
-    };
-    langTools.addCompleter(kbCompleter);
 }
 
 $(document).ready(function() {
+
 
     loadEditor();
 
@@ -116,6 +134,10 @@ $(document).ready(function() {
 
     $(".save-button").on("click", function() {
         saveDocument();
+    });
+
+    $(".format-button").on("click", function() {
+        pretty();
     });
 
     $("#find-value").on("keyup", function() {
